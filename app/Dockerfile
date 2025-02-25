@@ -4,9 +4,7 @@
 # If you need more help, visit the Dockerfile reference guide at
 # https://docs.docker.com/engine/reference/builder/
 
-ARG NODE_VERSION=19.5.0
-
-FROM node:${NODE_VERSION}-alpine
+FROM node:lts-alpine
 
 # Use production node environment by default.
 ENV NODE_ENV production

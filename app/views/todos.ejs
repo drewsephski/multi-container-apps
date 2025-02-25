@@ -1,79 +1,648 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Todo App</title>
-    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Nucleus - Todo App</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="font-family" href="https://googleapis.com/css2?family=Inter:wght@400;800&display=swap">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #7C3AED; /* Adjusted Violet */
+            --secondary-color: #6366F1; /* Adjusted Indigo */
+            --accent-color: #3B82F6; /* Adjusted Light Blue */
+            --background-color: #121212; /* Dark Background */
+            --text-color: #FFFFFF; /* White */
+            --gray-color: #A0AEC0; /* Gray */
+            --font-family: 'Inter', sans-serif;
+            --radial-gradient-1: radial-gradient(circle at center, rgba(124, 58, 237, 0.2) 0%, transparent 50%);
+            --radial-gradient-2: radial-gradient(circle at center, rgba(99, 102, 241, 0.4) 0%, transparent 50%);
+            --radial-gradient-3: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 60%);
+
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            /* Add a subtle background gradient */
+            background-image: linear-gradient(to bottom, rgba(18, 0, 43, 0.9), rgb(2, 0, 25));
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        header {
+            padding: 1rem 2rem;
+            background: rgba(0, 0, 0, 0.2); /* More subtle background */
+            width: 100%;
+            margin: 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: transparent;
+            padding: 0.5em;
+            width: 100%;
+            margin: 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+        }
+        /* Logo Graphic */
+       .logo span {
+            display: inline-block;
+            width: 1.5rem;
+            height: 1.5rem;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            position: relative;
+        }
+
+        .logo span::before {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            background-color: white;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .logo span::after {
+            content: '';
+            position: absolute;
+            width: 10px; /* Adjust as needed */
+            height: 10px; /* Adjust as needed */
+            background-color: transparent;
+            border: 2px solid white; /* Adjust as needed */
+            border-radius: 50%;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            gap: 1rem; /* Reduced gap */
+            align-items: center;
+        }
+
+        .nav-links li {
+            margin: 0; /* Remove extra margin */
+        }
+
+        .nav-link {
+            color: var(--gray-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            padding: 0.5rem 0.75rem; /* Adjusted padding */
+            font-size: 16px;
+        }
+
+        .nav-link:hover {
+            color: var(--text-color);
+        }
+
+        .signup-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 16px;
+        }
+        .signup-button:hover {
+            background-color: #6428b1;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background-image: linear-gradient(to bottom, rgba(18, 18, 18, 0.7), rgba(33, 33, 33, 0.9)); /* Hero section gradient */
+
+        }
+
+        .hero h1 {
+            font-size: 2.5rem; /* Adjusted font size */
+            font-weight: 700;
+            margin-bottom: 1rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero p {
+            font-size: 1.1rem; /* Adjusted font size */
+            color: var(--gray-color);
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 0.6rem 1.2rem; /* Adjusted padding */
+            border-radius: 0.375rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease; /* Added box-shadow transition */
+            font-size: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle box-shadow */
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Increased box-shadow on hover */
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Increased box-shadow on hover */
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 4rem 2rem;
+        }
+
+       .circle {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: var(--radial-gradient-1);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Ensure pseudo-elements stay within the circle */
+        }
+
+        /* Inner Circle Styles */
+        .inner-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--radial-gradient-2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: relative; /* For positioning the pseudo-elements */
+        }
+
+        .inner-circle span {
+            margin: 0.2rem 0;
+            font-weight: 600;
+            z-index: 2; /* Ensure text is above pseudo-elements */
+            color: var(--text-color);
+        }
+        .inner-circle #deploy-text {
+            font-size: 1.2em;
+        }
+
+        /* Inner Circle - Stylized N Graphic */
+        .inner-circle::before,
+        .inner-circle::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 70px;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            z-index: 1;
+        }
+
+        .inner-circle::before {
+            transform: rotate(30deg);
+            left: 35px;
+            top: 40px
+        }
+
+        .inner-circle::after {
+            transform: rotate(-30deg);
+            right: 35px;
+            top: 40px;
+        }
+
+        .radiating-element {
+            position: absolute;
+            height: 3px; /* Thicker line */
+            background-color: rgba(160, 174, 192, 0.5); /* More subtle color */
+            width: 150px; /* Length of the line */
+            transform-origin: left center;
+            transform: rotate(var(--angle)) translateX(150px);
+            transition: transform 0.3s ease; /* Smooth transition for hover effect */
+
+        }
+
+        .radiating-element::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -3px; /* Adjust to center the circle */
+            width: 8px; /* Smaller circle */
+            height: 8px; /* Smaller circle */
+            border-radius: 50%;
+            background-color: rgba(59, 130, 246, 0.7); /* More subtle color */
+            transition: background-color 0.3s ease; /* Smooth transition for hover */
+        }
+        .radiating-element:hover {
+            transform: rotate(calc(var(--angle) + 5deg)) translateX(150px); /* Slight rotation on hover */
+        }
+        .radiating-element:hover::after {
+            background-color: var(--primary-color); /* Change color on hover */
+        }
+
+        .feature-title {
+            position: absolute;
+            left: 170px; /* Adjust based on line length */
+            top: -12px; /* Closer to the line */
+            white-space: nowrap;
+            color: var(--gray-color);
+            transform: rotate(calc(-1 * var(--angle)));
+            transition: color 0.3s ease; /* Smooth transition for hover */
+        }
+        .radiating-element:hover + .feature-title {
+            color: var(--text-color); /* Change text color on hover */
+        }
+
+        .feature-list {
+            position: absolute;
+            left: 180px; /* Adjusted for better alignment */
+            top: 5px; /* Adjusted for better alignment */
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+            transform: rotate(calc(-1 * var(--angle)));
+        }
+
+        .feature-list li {
+            margin-bottom: 0.25rem;
+            color: var(--gray-color);
+            position: relative;
+            padding-left: 15px;
+            transition: color 0.3s ease;
+            font-size: 0.9rem; /* Slightly smaller font size */
+        }
+
+        .feature-list li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+        .radiating-element:hover ~ .feature-list li{
+            color: var(--text-color);
+        }
+
+        /* Todo List Styles */
+        .todo-section {
+            margin-top: 2rem;
+        }
+
+        .todo-list {
+            margin-top: 2rem;
+        }
+
+        .todo-list h3 {
+            margin-bottom: 1rem;
+        }
+
+        .todo-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .todo-list li {
+            padding: 0.75rem 1rem;
+            background-color: #212529;
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .todo-list li .delete-btn {
+            color: #dc3545;
+            cursor: pointer;
+        }
+
+        .container {
+            padding: 2rem;
+        }
+
+        /* Input Fields */
+        .input {
+            border: 2px solid var(--gray-color);
+            border-radius: 4px;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            color: var(--text-color);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2);
+        }
+
+        /* Button Styles */
+        .button-primary {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .button-primary:hover {
+            background: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        /* Existing styles from todos.ejs - Refactored for consistency */
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--gray-color);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: var(--text-color);
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid var(--gray-color);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: none; /* Hidden by default */
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        .btn-action {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+        .btn-delete {
+            color: #dc3545;
+        }
+        .todo-item {
+          color: var(--text-color);
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 0.5rem; /* Further reduce gap on smaller screens */
+            }
+            .nav-link{
+                padding: 0.5rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem; /* Smaller font size for hero title */
+            }
+
+            .hero p {
+                font-size: 1rem; /* Smaller font size for hero text */
+            }
+
+            .circle {
+                width: 250px; /* Smaller circle */
+                height: 250px; /* Smaller circle */
+            }
+
+            .inner-circle {
+                width: 120px; /* Smaller inner circle */
+                height: 120px; /* Smaller inner circle */
+            }
+            .inner-circle::before,
+            .inner-circle::after{
+                width: 15px;
+                height: 60px;
+                left: 30px;
+                top: 30px;
+            }
+            .inner-circle::after{
+                right: 30px;
+                left: auto;
+            }
+
+            .radiating-element {
+                width: 120px; /* Shorter radiating lines */
+                 transform: rotate(var(--angle)) translateX(125px);
+            }
+            .radiating-element::after{
+                top: -3px;
+                width: 8px;
+                height: 8px;
+            }
+
+            .feature-title {
+                left: 140px; /* Adjust title position */
+                top: -12px;
+                font-size: 0.8rem;
+            }
+
+            .feature-list {
+                left: 150px; /* Adjust list position */
+                top: 2px;
+                font-size: 0.7rem; /* Smaller font size for feature list */
+            }
+            .feature-list li{
+                padding-left: 10px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container m-5 p-2 rounded mx-auto bg-light shadow">
-        
-        <!-- App title section -->
-        <div class="row m-1 p-4">
-            <div class="col">
-                <div class="p-1 h1 text-primary text-center mx-auto display-inline-block">
-                    <u>Todo App</u>
-                </div>
+    <header>
+        <nav>
+            <div class="logo">
+                <span></span>
+                Nucleus
             </div>
-        </div>
-            <div class="row m-1 p-3">
-                <div class="col col-11 mx-auto">
-                    <form method="POST" action="/" autocomplete="off">
-                        <div class="row m-1 p-3">
-                            <div class="col col-11 mx-auto">
-                                <div class="row bg-white rounded shadow-sm p-2 add-todo-wrapper align-items-center justify-content-center">
-                                    <div class="col">
-                                        <input class="form-control form-control-lg border-0 add-todo-input bg-transparent rounded" type="text" name="task" placeholder="Add new Task">
-                                    </div>
-                                    <div class="col-auto px-0 mx-0 mr-2">
-                                        <button type="submit" class="btn btn-primary">Add</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <hr>
-                    <div class="row">
-                        <div class="col-12">
-                            <% if(Object.keys(tasks).length> 0) { %>
-                                <ul class="nav flex-column">
-                                    <% tasks.forEach(todo=> { %>
-                                        <li class="nav-item">
-                                            <div class="d-flex justify-content-between py-1">
-                                                <div class="d-flex flex-row">
-                                                    <div>
-                                                        <%= todo.task %>
-                                                            <p class="text-muted"><small>
-                                                                    <%= moment(todo.created_at).fromNow() %>
-                                                                </small></p>
-                                                    </div>
-                                                </div>
-                                                <a href="javascript:;" onclick="this.children[0].submit()"
-                                                    class="text-danger">
-                                                    <form method="POST" action="/todo/destroy">
-                                                        <input type="hidden" name="_key" value="<%= todo._id %>" />
-                                                    </form>
-                                                    <i class="fa fa-trash-o"></i>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <% }) %>
-                                </ul>
-                                <% } else { %>
-                                    <div class="text-center"><strong>Please add some task.</strong></div>
-                                    <% }%>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
+            <ul class="nav-links">
+                <li><a href="#" class="nav-link">About</a></li>
+                <li><a href="#" class="nav-link">Solutions</a></li>
+                <li><a href="#" class="nav-link">Platform page</a></li>
+                <li><a href="#" class="nav-link">Pricing</a></li>
+                <li><a href="#" class="nav-link">Resources</a></li>
+                <li><a href="#" class="signup-button">Sign up</a></li>
+            </ul>
+        </nav>
+    </header>
 
+    <section class="hero">
+        <h1>A Single Platform for Developers and DevOps</h1>
+        <p>Unify and automate your service management.</p>
+        <div class="buttons">
+            <button class="btn-primary">Try for Free</button>
+            <button class="btn-secondary">Get a Demo</button>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="circle">
+            <div class="inner-circle">
+                <span>Build</span>
+                <span id="deploy-text">Deploy</span>
+                <span>Manage</span>
+            </div>
+            <div class="radiating-element" style="--angle: 0deg;"></div>
+            <span class="feature-title" style="--angle: 0deg">Developers</span>
+            <ul class="feature-list" style="--angle: 0deg">
+                <li>Self-service environments</li>
+                <li>Real-time logging</li>
+                <li>CLI</li>
+                <li>Integrations</li>
+            </ul>
+             <div class="radiating-element" style="--angle: 180deg;"></div>
+                <span class="feature-title" style="--angle: 180deg">DevOps</span>
+            <ul class="feature-list" style="--angle: 180deg">
+                <li>Centralized configs</li>
+                <li>Built-in CI/CD</li>
+                <li>Resource control</li>
+                <li>Integrations</li>
+            </ul>
+            <div class="radiating-element" style="--angle: 90deg;"></div>
+            <span class="feature-title" style="--angle: 90deg">Feature 3</span>
+            <ul class="feature-list" style="--angle: 90deg">
+                <li>Item 1</li>
+                <li>Item 2</li>
+                <li>Item 3</li>
+                <li>Item 4</li>
+            </ul>
+            <div class="radiating-element" style="--angle: 270deg;"></div>
+            <span class="feature-title" style="--angle: 270deg">Feature 4</span>
+            <ul class="feature-list" style="--angle: 270deg">
+                <li>Item 1</li>
+                <li>Item 2</li>
+                <li>Item 3</li>
+                <li>Item 4</li>
+            </ul>
+
+        </div>
+    </section>
+
+    <section class="todo-section">
+        <div class="container">
+            <h2>My Tasks</h2>
+            <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+            <form method="POST" action="/" class="mb-4">
+                <div class="input-group">
+                    <input type="text" class="form-control input" name="task" placeholder="Add new task..." required>
+                    <button type="submit" class="btn btn-primary button-primary">Add Task <span class="spinner"></span></button>
+                </div>
+            </form>
+
+            <div class="todo-list">
+                <% if(todos.length> 0) { %>
+                    <ul role="list">
+                    <% todos.forEach(todo=> { %>
+                        <li role="listitem" class="todo-item">
+                            <input type="checkbox" <%= todo.completed ? 'checked' : '' %> aria-label="Toggle todo completion">
+                            <span class="todo-text"><%= todo.text %></span>
+                            <div class="todo-actions">
+                                <button class="btn-action btn-edit" aria-label="Edit todo">Edit</button>
+                                <form action="/todo/destroy" method="POST" style="display: inline;" class="delete-form">
+                                    <input type="hidden" name="_key" value="<%= todo._id %>">
+                                    <button type="submit" class="btn-action btn-delete" aria-label="Delete todo">Delete <span class="spinner"></span></button>
+                                </form>
+                            </div>
+                        </li>
+                    <% }) %>
+                    </ul>
+                <% } else { %>
+                    <p class="text-center" style="color: var(--gray-color)">No tasks yet. Add your first task above!</p>
+                <% } %>
+            </div>
+        </div>
+    </section>
+
+    <script>
+      // Existing script from todos.ejs
+        document.querySelectorAll('.delete-form').forEach(form => {
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const confirmed = confirm('Are you sure you want to delete this task?');
+                if (confirmed) {
+                    // Show the spinner
+                    this.querySelector('.spinner').style.display = 'inline-block';
+                    // Submit the form
+                    this.submit();
+                }
+            });
+        });
+
+        document.querySelector('.todo-section form').addEventListener('submit', function(event) {
+            // Show the spinner
+            this.querySelector('.spinner').style.display = 'inline-block';
+        });
+
+        // Script from nucleus-ui/script.js (Modified for new structure)
+        // No longer needed due to CSS-only hover effects
+    </script>
+</body>
 </html>

@@ -1,0 +1,6 @@
+<a href="javascript:;" onclick="this.children[0].submit()" class="text-danger">
+    <form method="POST" action="/todo/destroy">
+        <input type="hidden" name="_key" value="<%= todo._id %>" />
+    </form>
+    <i class="fa fa-trash-o"></i>
+</a>
