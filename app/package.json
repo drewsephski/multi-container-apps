@@ -6,10 +6,10 @@
   "scripts": {
     "start": "node server.js",
     "dev": "concurrently \"npm run server:dev\" \"npm run watch\"",
-    "watch": "livereload .",
+    "watch": "livereload . --wait 200",
     "server": "node server.js",
     "server:dev": "nodemon server.js"
-  },
+},
   "author": "Nucleus Team",
   "license": "ISC",
   "dependencies": {

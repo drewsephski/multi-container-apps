@@ -19,11 +19,12 @@ router.get('/', async (req, res) => {
 });
 
 // POST - Submit Task
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     const task = req.body.task;
 
     if (!task || task.trim() === '') {
-        return res.status(400).render("todos", { todos: [], errorMessage: 'Task cannot be empty' });
+        const todos = await Todo.find();
+        return res.status(400).render("todos", { todos: todos, errorMessage: 'Task cannot be empty' });
     }
 
     const newTask = new Todo({
@@ -31,26 +32,27 @@ router.post('/', (req, res) => {
     });
 
     newTask.save()
-    .then(task => res.redirect('/'))
-    .catch(err => {
-        console.error(err);
-        res.status(500).render("todos", { todos: [], errorMessage: 'Error saving task' });
-    });
+        .then(task => res.redirect('/'))
+        .catch(async err => {
+            console.error(err);
+            const todos = await Todo.find();
+            res.status(500).render("todos", { todos: todos, errorMessage: 'Error saving task' });
+        });
 });
 
-// POST - Destroy todo item
 router.post('/todo/destroy', async (req, res) => {
     const taskKey = req.body._key;
     try {
-        const result = await Todo.findOneAndRemove({_id: taskKey});
+        const result = await Todo.findOneAndRemove({ _id: taskKey });
         if (!result) {
-            // Handle the case where the todo item is not found
-            return res.status(404).render("todos", { todos: [], errorMessage: 'Todo item not found' });
+            const todos = await Todo.find();
+            return res.status(404).render("todos", { todos: todos, errorMessage: 'Todo item not found' });
         }
         res.redirect('/');
     } catch (err) {
-        console.error(err); // Log the error for debugging
-        res.status(500).render("todos", { todos: [], errorMessage: 'Error deleting todo item' });
+        console.error(err);
+        const todos = await Todo.find();
+        res.status(500).render("todos", { todos: todos, errorMessage: 'Error deleting todo item' });
     }
 });
 

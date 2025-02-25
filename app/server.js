@@ -46,6 +46,7 @@ mongoose
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
+    next(err); // Pass the error to the next middleware
 });
 
 // Serve static files from the 'public' directory
